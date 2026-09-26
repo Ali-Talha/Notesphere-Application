@@ -1,0 +1,130 @@
+﻿@model Notesphere.Operations.Models.Productivity.ProductivityTaskFormVM
+
+@{
+    ViewData["Title"] = "Edit Task";
+}
+
+<div class="ns-sharing-page">
+    <div class="ns-sharing-header">
+        <div>
+            <h2 class="ns-sharing-title">Edit Task</h2>
+            <p class="ns-sharing-subtitle">
+                Update task details and view checklist progress.
+            </p>
+        </div>
+    </div>
+
+    <div class="ns-form-card">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="ns-form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="ns-form-group">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description"></textarea>
+            </div>
+
+            <div class="ns-form-group">
+                <label asp-for="DueDate"></label>
+                <input asp-for="DueDate" type="date" />
+            </div>
+
+            <div class="ns-form-group">
+                <label asp-for="Priority"></label>
+                <select asp-for="Priority"
+                        asp-items="Html.GetEnumSelectList<Notesphere.Entities.ProductivityModels.TaskPriority>()">
+                </select>
+            </div>
+
+            <div class="ns-form-group">
+                <label asp-for="Status"></label>
+                <select asp-for="Status"
+                        asp-items="Html.GetEnumSelectList<Notesphere.Entities.ProductivityModels.TaskStatus>()">
+                </select>
+            </div>
+
+            <div class="ns-form-actions">
+                <button type="submit" class="ns-btn-primary">Save changes</button>
+                <a asp-action="Index" class="ns-btn-outline">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="ns-sharing-card" style="margin-top:16px;">
+        <div class="ns-section-header">
+            <h3 class="ns-section-title">Checklist</h3>
+            <span class="ns-section-subtitle">
+                Break this task into smaller steps and track completion.
+            </span>
+        </div>
+
+        @if (!Model.ChecklistItems.Any())
+        {
+            <p class="ns-help-text">
+                No checklist items yet. Add your first step below.
+            </p>
+        }
+        else
+        {
+            <table class="ns-sharing-table">
+                <thead>
+                    <tr>
+                        <th>Done</th>
+                        <th>Step</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ChecklistItems)
+                    {
+                        <tr>
+                            <td style="width:60px;">
+                                <form asp-action="ToggleChecklistItem" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="taskId" value="@Model.Id" />
+                                    <input type="hidden" name="itemId" value="@item.Id" />
+                                    <input type="hidden" name="isDone" value="@(item.IsDone ? "false" : "true")" />
+                                    <input type="checkbox"
+                                           @(item.IsDone ? "checked" : "")
+                                           onchange="this.form.submit()" />
+                                </form>
+                            </td>
+                            <td>
+                                @item.Label
+                                <form asp-action="DeleteChecklistItem"
+                                      method="post"
+                                      style="display:inline; margin-left:12px;">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="taskId" value="@Model.Id" />
+                                    <input type="hidden" name="itemId" value="@item.Id" />
+                                    <button type="submit"
+                                            class="btn btn-link p-0"
+                                            style="font-size:0.8rem;">
+                                        Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        <hr />
+
+        <form asp-action="AddChecklistItem" method="post" class="ns-form-group">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="taskId" value="@Model.Id" />
+
+            <label>Add new step</label>
+            <input type="text" name="label" placeholder="e.g., Record presentation" />
+            <button type="submit" class="ns-btn-primary" style="margin-top:8px;">
+                Add step
+            </button>
+        </form>
+    </div>
+</div>

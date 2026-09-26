@@ -1,0 +1,68 @@
+﻿@model List<Notesphere.Operations.Models.Productivity.ProductivityTaskListItemVM>
+
+@{
+    ViewData["Title"] = "Productivity";
+}
+
+<div class="ns-sharing-page">
+    <div class="ns-sharing-header">
+        <div>
+            <h2 class="ns-sharing-title">Productivity</h2>
+            <p class="ns-sharing-subtitle">
+                Track deadlines, priorities, and your progress across tasks.
+            </p>
+        </div>
+        <div class="ns-sharing-actions">
+            <a asp-action="Create" class="ns-btn-primary">New Task</a>
+        </div>
+    </div>
+
+    <div class="ns-sharing-card">
+        <table class="ns-sharing-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Due</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Progress</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6">
+                            <span class="ns-help-text">
+                                You have no productivity tasks yet. Create one to get started.
+                            </span>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Title</td>
+                            <td>@(item.DueDate?.ToShortDateString() ?? "-")</td>
+                            <td>@item.Priority</td>
+                            <td>@item.Status</td>
+                            <td>@item.ProgressPercent %</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                <form asp-action="Delete"
+                                      asp-route-id="@item.Id"
+                                      method="post"
+                                      style="display:inline">
+                                    <button type="submit" class="btn btn-link p-0">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

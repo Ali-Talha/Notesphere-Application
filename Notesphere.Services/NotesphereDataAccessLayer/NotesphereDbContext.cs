@@ -3,6 +3,7 @@ using Notesphere.Entities.DashboardModels;
 using Notesphere.Entities.NotesModels;
 using Notesphere.Entities.PlannerModels;
 using Notesphere.Entities.SharingModels;
+using Notesphere.Entities.ProductivityModels;
 
 
 namespace Notesphere.Services.NotesphereDataAccessLayer
@@ -93,6 +94,8 @@ namespace Notesphere.Services.NotesphereDataAccessLayer
         //Sharing.db sets
 
         //Productivity.db sets
+        public DbSet<ProductivityTask> ProductivityTasks { get; set; } = null!;
+        public DbSet<TaskChecklistItem> TaskChecklistItems { get; set; } = null!;
 
     }
 }

@@ -1,0 +1,55 @@
+﻿@model Notesphere.Operations.Models.Productivity.ProductivityTaskFormVM
+
+@{
+    ViewData["Title"] = "Create Task";
+}
+
+<div class="ns-sharing-page">
+    <div class="ns-sharing-header">
+        <div>
+            <h2 class="ns-sharing-title">Create Task</h2>
+            <p class="ns-sharing-subtitle">
+                Add a new task with a due date, priority, and status.
+            </p>
+        </div>
+    </div>
+
+    <div class="ns-form-card">
+        <form asp-action="Create" method="post">
+            <div class="ns-form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="ns-form-group">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description"></textarea>
+            </div>
+
+            <div class="ns-form-group">
+                <label asp-for="DueDate"></label>
+                <input asp-for="DueDate" type="date" />
+            </div>
+
+            <div class="ns-form-group">
+                <label asp-for="Priority"></label>
+                <select asp-for="Priority"
+                        asp-items="Html.GetEnumSelectList<Notesphere.Entities.ProductivityModels.TaskPriority>()">
+                </select>
+            </div>
+
+            <div class="ns-form-group">
+                <label asp-for="Status"></label>
+                <select asp-for="Status"
+                        asp-items="Html.GetEnumSelectList<Notesphere.Entities.ProductivityModels.TaskStatus>()">
+                </select>
+            </div>
+
+            <div class="ns-form-actions">
+                <button type="submit" class="ns-btn-primary">Create task</button>
+                <a asp-action="Index" class="ns-btn-outline">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
