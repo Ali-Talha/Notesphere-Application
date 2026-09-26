@@ -1,6 +1,6 @@
 # 📓 Notesphere
 
-A full-featured student productivity web application that helps students manage notes, plan schedules, and collaborate with peers — all in one place.
+A full-featured student productivity web application that helps students manage notes, plan schedules, track tasks, and collaborate with peers — all in one place.
 
 > Built as a collaborative academic project at Sheridan College, Fall 2025.
 
@@ -12,6 +12,7 @@ A full-featured student productivity web application that helps students manage 
 - **Planner** — Weekly event planner with recurring events and real-time conflict detection
 - **Dashboard** — Personal workspace with reminders and quick actions
 - **Sharing** — Collaborate and share notes with other users
+- **Productivity** — Task manager with priorities, statuses, due dates, and checklists that automatically update each task's progress
 - **Authentication** — Secure login and registration
 
 ---
@@ -35,14 +36,14 @@ A full-featured student productivity web application that helps students manage 
 ### Running the Project
 
 1. Clone the repository
-   ```bash
-   git clone https://github.com/mamin2300/Notesphere-Application.git
-   ```
-2. Open the solution in Visual Studio
-3. Apply database migrations
-   ```bash
-   dotnet ef database update
-   ```
+```bash
+   git clone https://github.com/Ali-Talha/Notesphere-Application.git
+```
+2. Open `Notesphere Application.sln` in Visual Studio and set **Notesphere.Operations** as the startup project
+3. Apply database migrations (optional, as the repository includes an up-to-date SQLite database)
+```bash
+   dotnet ef database update --project Notesphere.Services --startup-project Notesphere.Operations
+```
 4. Press **F5** to run
 
 ---
@@ -51,12 +52,15 @@ A full-featured student productivity web application that helps students manage 
 
 ```
 Notesphere/
-├── Controllers/          # MVC Controllers
-├── Models/               # Entity models
-├── Views/                # Razor views
-├── Services/             # Business logic & repositories
-├── Migrations/           # EF Core migrations
-└── NotesphereDbContext   # Database context
+├── Notesphere.Entities/          # Entity models (Notes, Planner, Dashboard, Sharing, Productivity)
+├── Notesphere.Services/          # Business logic & repositories
+│   ├── NotesphereDataAccessLayer/  # NotesphereDbContext (database context)
+│   └── Migrations/               # EF Core migrations
+└── Notesphere.Operations/        # ASP.NET Core MVC web application
+    ├── Controllers/              # MVC Controllers
+    ├── Models/                   # View models
+    ├── Views/                    # Razor views
+    └── Data/                     # SQLite database
 ```
 
 ---
@@ -67,9 +71,8 @@ Collaborative academic project — Sheridan College, Fall 2025.
 
 | Name | Role |
 |------|------|
-| Mamin | Team Member |
+| Mamin Khan | Notes & Dashboard Module |
 | Malika Muskan | Planner Module |
-| Talha | Team Member |
-| Saad | Team Member |
-
+| Talha Ali | Productivity Module |
+| Saad Kifayat | Sharing & Collaboration Module |
 
